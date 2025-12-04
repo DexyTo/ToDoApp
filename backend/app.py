@@ -18,7 +18,20 @@ def create_app():
     
     # Create tables
     with app.app_context():
-        db.create_all()
+        try:
+            inspector = db.inspect(db.engine)
+            if not inspector.has_table('tasks'):
+                db.create_all()
+                app.logger.info("Database tables created successfully")
+            else:
+                app.logger.info("Database tables already exist")
+        except Exception as e:
+            app.logger.error(f"Error creating database tables: {e}")
+            # Для MySQL можно попробовать альтернативный подход
+            try:
+                db.create_all()
+            except Exception as e2:
+                app.logger.warning(f"Tables might already exist: {e2}")
     
     # Setup API routes
     api = Api(app, prefix='/api')
