@@ -7,20 +7,23 @@ from flask import current_app
 class YandexS3Storage:
     def __init__(self):
         self.s3_client = None
-        self._init_client()
+        self.bucket_name = None
     
-    def _init_client(self):
-        """Initialize S3 client with Yandex Cloud configuration"""
-        self.s3_client = boto3.client(
-            's3',
-            endpoint_url=current_app.config['YC_S3_ENDPOINT'],
-            aws_access_key_id=current_app.config['YC_S3_ACCESS_KEY'],
-            aws_secret_access_key=current_app.config['YC_S3_SECRET_KEY']
-        )
-        self.bucket_name = current_app.config['YC_S3_BUCKET']
+    def _ensure_client(self):
+        """Initialize S3 client if not already initialized"""
+        if self.s3_client is None:
+            self.s3_client = boto3.client(
+                's3',
+                endpoint_url=current_app.config['YC_S3_ENDPOINT'],
+                aws_access_key_id=current_app.config['YC_S3_ACCESS_KEY'],
+                aws_secret_access_key=current_app.config['YC_S3_SECRET_KEY'],
+                region_name=current_app.config['YC_S3_REGION']
+            )
+            self.bucket_name = current_app.config['YC_S3_BUCKET']
     
     def upload_file(self, file, filename):
         """Upload a file to Yandex S3"""
+        self._ensure_client()
         try:
             self.s3_client.upload_fileobj( # type: ignore
                 file,
@@ -38,6 +41,7 @@ class YandexS3Storage:
         if not filename:
             return True
         
+        self._ensure_client()
         try:
             self.s3_client.delete_object( # type: ignore
                 Bucket=self.bucket_name,
@@ -53,6 +57,7 @@ class YandexS3Storage:
         if not filename:
             return None
         
+        self._ensure_client()
         try:
             url = self.s3_client.generate_presigned_url( # type: ignore
                 'get_object',
@@ -76,4 +81,5 @@ class YandexS3Storage:
         unique_id = str(uuid.uuid4())
         return f"{unique_id}.{ext}" if ext else unique_id
 
+# Создаем экземпляр, но инициализация произойдет позже
 storage = YandexS3Storage()

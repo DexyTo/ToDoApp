@@ -4,6 +4,7 @@ from models import Task
 from extensions import db
 from storage import storage
 
+
 # Request parsers
 task_parser = reqparse.RequestParser()
 task_parser.add_argument('title', type=str, required=True, help='Title is required')
