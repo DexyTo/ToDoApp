@@ -5,10 +5,10 @@ services:
     image: mysql:8
     container_name: todo-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: todo_db
-      MYSQL_USER: todo_user
-      MYSQL_PASSWORD: todo_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
@@ -28,13 +28,12 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:-dev-secret-key-change-this}
-      DATABASE_URL: mysql://todo_user:todo_password@mysql:3306/todo_db
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
+      DATABASE_URL: ${DATABASE_URL}
       YC_S3_ENDPOINT: ${YC_S3_ENDPOINT}
       YC_S3_ACCESS_KEY: ${YC_S3_ACCESS_KEY}
       YC_S3_SECRET_KEY: ${YC_S3_SECRET_KEY}
       YC_S3_BUCKET: ${YC_S3_BUCKET}
-      YC_S3_REGION: ${YC_S3_REGION:-ru-central1}
     ports:
       - "5000:5000"
     volumes:

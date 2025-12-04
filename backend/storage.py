@@ -15,8 +15,7 @@ class YandexS3Storage:
             's3',
             endpoint_url=current_app.config['YC_S3_ENDPOINT'],
             aws_access_key_id=current_app.config['YC_S3_ACCESS_KEY'],
-            aws_secret_access_key=current_app.config['YC_S3_SECRET_KEY'],
-            region_name=current_app.config['YC_S3_REGION']
+            aws_secret_access_key=current_app.config['YC_S3_SECRET_KEY']
         )
         self.bucket_name = current_app.config['YC_S3_BUCKET']
     
