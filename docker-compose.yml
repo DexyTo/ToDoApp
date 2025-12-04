@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: todo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: todo_db
+      MYSQL_USER: todo_user
+      MYSQL_PASSWORD: todo_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - todo-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: todo-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:-dev-secret-key-change-this}
+      DATABASE_URL: mysql://todo_user:todo_password@mysql:3306/todo_db
+      YC_S3_ENDPOINT: ${YC_S3_ENDPOINT}
+      YC_S3_ACCESS_KEY: ${YC_S3_ACCESS_KEY}
+      YC_S3_SECRET_KEY: ${YC_S3_SECRET_KEY}
+      YC_S3_BUCKET: ${YC_S3_BUCKET}
+      YC_S3_REGION: ${YC_S3_REGION:-ru-central1}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - todo-network
+
+  frontend:
+    build: ./frontend
+    container_name: todo-frontend
+    depends_on:
+      - backend
+    environment:
+      VITE_API_BASE_URL: http://localhost:5000
+    ports:
+      - "3000:80"
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
