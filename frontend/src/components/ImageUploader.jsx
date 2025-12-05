@@ -10,12 +10,12 @@ const ImageUploader = ({ taskId, onImageUploaded }) => {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
+      alert('Пожалуйста, выберите файл изображения')
       return
     }
 
     if (file.size > 16 * 1024 * 1024) { // 16MB limit
-      alert('File size must be less than 16MB')
+      alert('Размер файла должен быть не более 16 МБ')
       return
     }
 
@@ -23,10 +23,10 @@ const ImageUploader = ({ taskId, onImageUploaded }) => {
     try {
       const response = await taskApi.uploadImage(taskId, file)
       onImageUploaded(response.data.filename)
-      alert('Image uploaded successfully!')
+      alert('Изображение успешно загружено!')
     } catch (error) {
-      console.error('Error uploading image:', error)
-      alert('Failed to upload image. Please try again.')
+      console.error('Ошибка при загрузке изображения:', error)
+      alert('Не удалось загрузить изображение. Пожалуйста, попробуйте снова.')
     } finally {
       setIsUploading(false)
       if (fileInputRef.current) {
@@ -47,7 +47,7 @@ const ImageUploader = ({ taskId, onImageUploaded }) => {
         disabled={isUploading}
         className="text-sm text-green-500 hover:text-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isUploading ? 'Uploading...' : 'Upload Image'}
+        {isUploading ? 'Загрузка...' : 'Загрузить изображение'}
       </button>
       <input
         type="file"

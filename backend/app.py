@@ -9,31 +9,22 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
-    # Initialize extensions
     db.init_app(app)
     cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
     
-    # Setup logging
     logging.basicConfig(level=logging.INFO)
     
-    # Create tables
     with app.app_context():
         try:
             inspector = db.inspect(db.engine)
             if not inspector.has_table('tasks'):
                 db.create_all()
-                app.logger.info("Database tables created successfully")
+                app.logger.info("Таблица tasks успешно создана")
             else:
-                app.logger.info("Database tables already exist")
+                app.logger.info("Таблица tasks уже существует")
         except Exception as e:
-            app.logger.error(f"Error creating database tables: {e}")
-            # Для MySQL можно попробовать альтернативный подход
-            try:
-                db.create_all()
-            except Exception as e2:
-                app.logger.warning(f"Tables might already exist: {e2}")
+            app.logger.error(f"Ошбика создания таблицы tasks: {e}")
     
-    # Setup API routes
     api = Api(app, prefix='/api')
     
     api.add_resource(TaskListResource, '/tasks')
@@ -49,4 +40,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)

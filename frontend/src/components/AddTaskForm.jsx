@@ -20,8 +20,8 @@ const AddTaskForm = ({ onTaskAdded }) => {
       setTitle('')
       setDescription('')
     } catch (error) {
-      console.error('Error creating task:', error)
-      alert('Failed to create task. Please try again.')
+      console.error('Ошибка при создании задачи:', error)
+      alert('Не удалось создать задачу. Пожалуйста, попробуйте снова.')
     } finally {
       setIsSubmitting(false)
     }
@@ -31,7 +31,7 @@ const AddTaskForm = ({ onTaskAdded }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-          Title *
+          Заголовок *
         </label>
         <input
           id="title"
@@ -47,7 +47,7 @@ const AddTaskForm = ({ onTaskAdded }) => {
       
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-          Description
+          Описание
         </label>
         <textarea
           id="description"
@@ -65,7 +65,7 @@ const AddTaskForm = ({ onTaskAdded }) => {
         disabled={isSubmitting || !title.trim()}
         className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
-        {isSubmitting ? 'Adding...' : 'Add Task'}
+        {isSubmitting ? 'Добавление...' : 'Добавить задачу'}
       </button>
     </form>
   )

@@ -19,7 +19,7 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
         setImageUrl(response.data.url)
       }
     } catch (error) {
-      console.error('Error fetching image URL:', error)
+      console.error('Ошибка при получении URL изображения:', error)
     } finally {
       setIsLoadingImage(false)
     }
@@ -40,7 +40,7 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
       const response = await taskApi.updateTask(task.id, updatedTask)
       onTaskUpdated(response.data)
     } catch (error) {
-      console.error('Error updating task:', error)
+      console.error('Ошибка обновления задачи:', error)
     }
   }
 
@@ -57,18 +57,18 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
       onTaskUpdated(response.data)
       setIsEditing(false)
     } catch (error) {
-      console.error('Error updating task:', error)
+      console.error('Ошибка обновления задачи:', error)
     }
   }
 
   const handleDeleteTask = async () => {
-    if (!window.confirm('Are you sure you want to delete this task?')) return
+    if (!window.confirm('Вы уверены, что хотите удалить эту задачу?')) return
     
     try {
       await taskApi.deleteTask(task.id)
       onTaskDeleted(task.id)
     } catch (error) {
-      console.error('Error deleting task:', error)
+      console.error('Ошибка удаления задачи:', error)
     }
   }
 
@@ -103,13 +103,13 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
               onClick={() => setIsEditing(false)}
               className="px-4 py-2 text-gray-600 hover:text-gray-800"
             >
-              Cancel
+              Отмена
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-              Save
+              Сохранить
             </button>
           </div>
         </form>
@@ -145,7 +145,7 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
               {task.image_filename && (
                 <div className="mt-4">
                   {isLoadingImage ? (
-                    <div className="text-gray-500">Loading image...</div>
+                    <div className="text-gray-500">Загрузка изображения...</div>
                   ) : imageUrl ? (
                     <div className="relative group">
                       <img
@@ -159,11 +159,11 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
                         rel="noopener noreferrer"
                         className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
                       >
-                        <span className="text-white text-sm">View full size</span>
+                        <span className="text-white text-sm">Открыть</span>
                       </a>
                     </div>
                   ) : (
-                    <div className="text-gray-400">Image not available</div>
+                    <div className="text-gray-400">Изображение недоступно</div>
                   )}
                 </div>
               )}
@@ -177,13 +177,13 @@ const TaskCard = ({ task, onTaskUpdated, onTaskDeleted }) => {
                   onClick={() => setIsEditing(true)}
                   className="text-sm text-blue-500 hover:text-blue-700"
                 >
-                  Edit
+                  Изменить
                 </button>
                 <button
                   onClick={handleDeleteTask}
                   className="text-sm text-red-500 hover:text-red-700"
                 >
-                  Delete
+                  Удалить
                 </button>
                 <span className="text-xs text-gray-400">
                   {new Date(task.created_at).toLocaleDateString()}

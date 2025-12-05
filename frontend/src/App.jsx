@@ -14,7 +14,7 @@ function App() {
       const data = await response.json()
       setTasks(data)
     } catch (error) {
-      console.error('Error fetching tasks:', error)
+      console.error('Ошибка при получении задачи:', error)
     } finally {
       setLoading(false)
     }
@@ -41,7 +41,7 @@ function App() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-600">Loading tasks...</div>
+        <div className="text-gray-600">Задачи загружаются...</div>
       </div>
     )
   }
@@ -51,13 +51,13 @@ function App() {
       <div className="max-w-4xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Todo List</h1>
-          <p className="text-gray-600">Manage your tasks with images</p>
+          <p className="text-gray-600">Не теряю возможность. Запиши самое главное!</p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold text-gray-700 mb-4">Add New Task</h2>
+              <h2 className="text-xl font-semibold text-gray-700 mb-4">Добавить новую задачу</h2>
               <AddTaskForm onTaskAdded={handleTaskAdded} />
             </div>
           </div>

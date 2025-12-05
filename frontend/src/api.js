@@ -10,14 +10,12 @@ const api = axios.create({
 })
 
 export const taskApi = {
-  // Task CRUD operations
   getTasks: () => api.get('/api/tasks'),
   getTask: (id) => api.get(`/api/tasks/${id}`),
   createTask: (taskData) => api.post('/api/tasks', taskData),
   updateTask: (id, taskData) => api.put(`/api/tasks/${id}`, taskData),
   deleteTask: (id) => api.delete(`/api/tasks/${id}`),
 
-  // Image operations
   uploadImage: (id, imageFile) => {
     const formData = new FormData()
     formData.append('image', imageFile)
