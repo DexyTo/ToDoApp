@@ -39,7 +39,6 @@ const AddTaskForm = ({ onTaskAdded }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="What needs to be done?"
           required
           disabled={isSubmitting}
         />
@@ -54,7 +53,6 @@ const AddTaskForm = ({ onTaskAdded }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Additional details..."
           rows="3"
           disabled={isSubmitting}
         />
